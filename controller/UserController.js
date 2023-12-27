@@ -71,6 +71,8 @@ const login=(req,res)=>{
                     const   expiresIn='24h'
 
                     const token=jsonWebToken.sign(playLoad,secretKey,{expiresIn})
+
+                    res.setHeader("Authorization",`Bearer ${token}`)
                     return res.status(200).json({token})
 
                 }else {
