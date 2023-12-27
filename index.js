@@ -12,11 +12,13 @@ const UserRouter=require('./router/UserRouter')
 const CustomerRouter=require('./router/customerRoute')
 const ProductRouter=require('./router/ProductRoute')
 const OrderRouter=require('./router/OrderRoute')
+
 mongoose.connect('mongodb://127.0.0.1:27017/pos_crud').then(()=>{
     app.listen(port,()=>{
         console.log(`server port running ${port}`)
     })
 })
+
 
 app.use("/api/v1/users",UserRouter)
 app.use("/api/v1/customers",CustomerRouter)

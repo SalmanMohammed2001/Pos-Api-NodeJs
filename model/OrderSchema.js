@@ -7,4 +7,4 @@ const OrderSchema=new mongoose.Schema({
     Product:{type:Array,require:true},
 })
 
-module.exports=mongoose.model('customer',OrderSchema)
+module.exports=mongoose.model('order',OrderSchema)

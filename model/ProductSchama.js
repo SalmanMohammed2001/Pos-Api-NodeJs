@@ -8,4 +8,4 @@ const ProductSchema=new mongoose.Schema({
     qtyOnHand:{type:Number,require:true},
 })
 
-module.exports=mongoose.model('customer',ProductSchema);
+module.exports=mongoose.model('product',ProductSchema);

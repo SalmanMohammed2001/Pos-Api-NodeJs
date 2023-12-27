@@ -4,8 +4,6 @@ const jsonWebToken=require('jsonwebtoken')
 const nodeMailer=require('nodemailer')
 
 const register=(req,res)=>{
-
-
    UserSchema.findOne({email:req.body.email}).then((result)=>{
         if(result==null){
 
@@ -66,12 +64,15 @@ const login=(req,res)=>{
             bcrypt.compare(req.body.password,selectUser.password, function(err, result) {
 
                 if(result){
-                    const playLoad={email:selectUser.email}
+                /*    const playLoad={email:selectUser.email}
                     const secretKey=process.env.SECRET_KRY;
                     const   expiresIn='24h'
 
-                    const token=jsonWebToken.sign(playLoad,secretKey,{expiresIn})
+                    const token=jsonWebToken.sign(playLoad,secretKey,{expiresIn})*/
 
+                    const expiresIn=3600;
+                    const token=  jsonWebToken.sign({'email':selectUser.email},
+                        process.env.SECRET_KEY,{expiresIn});
                     res.setHeader("Authorization",`Bearer ${token}`)
                     return res.status(200).json({token})
 
@@ -82,7 +83,6 @@ const login=(req,res)=>{
 
             });
 
-         //   return res.status(500).json({data:selectUser});
 
         }else {
 

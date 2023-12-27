@@ -3,7 +3,6 @@ const secretKey=process.env.SECRET_KRY
 
 const verifyToken=(req,res,next)=>{
     const authorizationHeader= req.headers.authorization;
-    console.log(authorizationHeader)
 
     if(!authorizationHeader){
         return res.status(401).json({error:'no token provided'})
@@ -22,9 +21,8 @@ const verifyToken=(req,res,next)=>{
 
     try{
 
-
         const decodedData=jsonWebToken.verify(token,process.env.SECRET_KEY)
-        console.log(decodedData);
+
         next();
 
     }catch(error){
