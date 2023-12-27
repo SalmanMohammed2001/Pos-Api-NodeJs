@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/create',ProductController.create);
 router.get('/find-by-id/:id',ProductController.findById);
-router.delete('/delete-by-id',ProductController.deleteById);
+router.delete('/delete/:id',ProductController.deleteById);
 router.put('/update/:id',ProductController.update);
 router.get('/find-all',verifyToken,ProductController.findAll);
 

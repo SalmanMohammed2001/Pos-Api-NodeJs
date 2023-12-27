@@ -29,14 +29,14 @@ const findById=(req,res)=>{
 
 }
 const update=(req,res)=>{
-    CustomerSchema.updateOne({nic:req.body.nic,},{
+    CustomerSchema.findOneAndUpdate({nic:req.body.nic,},{
         $set:{
             name:req.body.name,
             address:req.body.address,
             salary:req.body.salary,
         }
-    }).then((update)=>{
-        if(update.modifiedCount>0){
+    },{new:true}).then((update)=>{
+        if(update){
             res.status(201).json({status:true,message:'customer update'})
         }else {
             res.status(201).json({status:false,message:'Try again'})
@@ -45,24 +45,47 @@ const update=(req,res)=>{
         res.status(500).json(error)
     })
 }
-const deleteById=(req,res)=>{
-    console.log({nic:req.params.nic})
-    CustomerSchema.deleteOne({nic:req.params.nic}).then(result=>{
-        if(result){
-            res.status(204).json({status:true,message:'customer delete'})
-        }else {
-            res.status(400).json({status:false,message:'Try Again'})
-        }
-    }).catch(error=>{
-        res.status(500).json(error)
-    })
+const deleteById=async (req,res)=>{
+    const  deleteData= await CustomerSchema.findByIdAndDelete({'_id':req.params.id})
+    if(deleteData){
+        res.status(204).json({message:'customer delete'})
+    }else{
+        return res.status(500).json({message:'customer not delete'})
+
+    }
 }
 const findAll=(req,res)=>{
-    CustomerSchema.find().then(result=>{
+    /*CustomerSchema.find().then(result=>{
         res.status(200).json({status:true,data:result})
     }).catch(error=>{
         res.status(500).json(error)
-    })
+    })*/
+
+    try{
+
+        const {searchText,page=1,size=10}=req.query;
+        const pageNumber=parseInt(page)
+        const pageSize=parseInt(size)
+
+        const query={};
+        if(searchText){
+            query.$text={$search:searchText}
+        }
+
+        const skip=(pageNumber-1) * pageSize;
+
+        const data= CustomerSchema.find(query)
+            .limit(pageSize)
+            .skip(skip)
+
+
+        res.status(200).json(data)
+
+    }catch(error){
+
+        return res.status(500).json(error)
+
+    }
 }
 
 module.exports={
