@@ -16,12 +16,12 @@ const create=(req,res)=>{
 
 }
 const findById=(req,res)=>{
-    console.log({nic:req.params.nic})
+    console.log({'_id':req.params.id})
     CustomerSchema.findOne({_id:req.params.id}).then((result)=>{
         if(result!=null){
-            res.status(201).json({message:'product data',data:result})
+            res.status(201).json({message:'customer',data:result})
         }else {
-            return res.status(500).json({message:'product not found'})
+            return res.status(500).json({message:'customer not found'})
         }
     }).catch((error)=>{
         return   res.status(500).json({message:'save customer',error:error})
@@ -29,8 +29,9 @@ const findById=(req,res)=>{
 
 }
 const update=(req,res)=>{
-    CustomerSchema.findOneAndUpdate({nic:req.body.nic,},{
+    CustomerSchema.findOneAndUpdate({'_id':req.params.id},{
         $set:{
+            nic:req.body.nic,
             name:req.body.name,
             address:req.body.address,
             salary:req.body.salary,
@@ -46,15 +47,16 @@ const update=(req,res)=>{
     })
 }
 const deleteById=async (req,res)=>{
-    const  deleteData= await CustomerSchema.findByIdAndDelete({'_id':req.params.id})
+    console.log(req.param('id'))
+   const  deleteData= await CustomerSchema.findByIdAndDelete({'_id':req.param('id')})
     if(deleteData){
         res.status(204).json({message:'customer delete'})
     }else{
         return res.status(500).json({message:'customer not delete'})
-
     }
 }
 const findAll=(req,res)=>{
+
     /*CustomerSchema.find().then(result=>{
         res.status(200).json({status:true,data:result})
     }).catch(error=>{
@@ -74,12 +76,12 @@ const findAll=(req,res)=>{
 
         const skip=(pageNumber-1) * pageSize;
 
-        const data= CustomerSchema.find(query)
+        CustomerSchema.find(query)
             .limit(pageSize)
-            .skip(skip)
+            .skip(skip).then(response=>{
+            return res.status(200).json(response);
+        })
 
-
-        res.status(200).json(data)
 
     }catch(error){
 

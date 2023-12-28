@@ -6,9 +6,12 @@ const verifyToken=require('../middleware/AuthMiddleWare')
 // router.post('/create',verifyToken,CustomerController.create);
 router.post('/create',CustomerController.create);
 router.get('/find-by-id/:id', CustomerController.findById);
-router.delete('/delete/:id',verifyToken,CustomerController.deleteById);
-router.put('/update/:id',verifyToken,CustomerController.update);
-router.get('/find-all',verifyToken,CustomerController.findAll);
+// router.delete('/delete/:id',verifyToken,CustomerController.deleteById);
+router.delete('/delete-by-id',CustomerController.deleteById);
+// router.put('/update/:id',verifyToken,CustomerController.update);
+router.put('/update/:id',CustomerController.update);
+// router.get('/find-all',verifyToken,CustomerController.findAll);
+router.get('/find-all',CustomerController.findAll);
 
 
 
