@@ -82,6 +82,7 @@ const findAll=(req,res)=>{
     }
 }
 
+
 module.exports={
     create,findById,update,deleteById,findAll
 }

@@ -1,10 +1,12 @@
 const mongoose=require('mongoose')
 const express=require('express')
 require('dotenv').config()
+const cors = require('cors')
 const app=express()
 const bodyParser=require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cors())
 const port=process.env.SERVER_PORT | 3000
 
 
@@ -18,6 +20,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/pos_crud').then(()=>{
         console.log(`server port running ${port}`)
     })
 })
+
 
 
 app.use("/api/v1/users",UserRouter)
