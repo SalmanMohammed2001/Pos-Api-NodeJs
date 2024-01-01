@@ -22,7 +22,7 @@ const upload = multer({storage: storage})
 router.post('/create',upload.single('image'),ProductController.create);
 router.get('/find-by-id/:id',ProductController.findById);
 router.delete('/delete-by-id/:id',ProductController.deleteById);
-router.put('/update/:id',ProductController.update);
+router.put('/update/:id',upload.single('image'),ProductController.update);
 router.get('/find-all',ProductController.findAll);
 router.get('/find-all-min',ProductController.findAllMin);
 
