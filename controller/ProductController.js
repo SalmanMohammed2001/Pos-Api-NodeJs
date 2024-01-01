@@ -1,10 +1,14 @@
 const ProductSchema=require('../model/ProductSchama')
+const {query} = require("express");
+
 
 const create=(req,res)=>{
-    const product =new productSchema({
+    //console.log(req.body)
+  //  console.log(req.file)
+   const product =new ProductSchema({
         name:req.body.name,
         description:req.body.description,
-        image:req.body.image,
+        image:req.file.path,
         qtyOnHand:req.body.qtyOnHand,
         unitePrice:req.body.unitePrice
     });
@@ -20,7 +24,7 @@ const create=(req,res)=>{
 const findById=(req,res)=>{
     ProductSchema.findOne({'_id':req.params.id}).then(response=>{
         if(response!=null){
-            res.status(201).json({message:'product data',data:response})
+            res.status(201).json(response)
         }else {
             return res.status(500).json({message:'product not found'})
         }
@@ -59,7 +63,7 @@ const deleteById= async (req,res)=>{
     }
 }
 const findAll=(req,res)=>{
-    try{
+  /*  try{
         const {searchText,page=1,size=1}=req.query;
         const pageNumber=parseInt(page)
         const pageSize=parseInt(size)
@@ -79,10 +83,53 @@ const findAll=(req,res)=>{
 
         return res.status(500).json(error)
 
+    }*/
+
+    try{
+
+        const {searchText,page=1,size=10}=req.query;
+        const pageNumber=parseInt(page)
+        const pageSize=parseInt(size)
+
+        const query={};
+        if(searchText){
+            query.$text={$search:searchText}
+        }
+
+        const skip=(pageNumber-1) * pageSize;
+
+        ProductSchema.find(query)
+            .limit(pageSize)
+            .skip(skip).then(response=>{
+            return res.status(200).json(response);
+        })
+
+
+    }catch(error){
+
+        return res.status(500).json(error)
+
     }
+
+
+}
+
+const findAllMin=(req,res)=>{
+    try{
+        ProductSchema.find({qtyOnHand:{$lt:10}}).then(data=>{
+            return res.status(200).json(data);
+        })
+
+
+    }catch(error){
+
+        return res.status(500).json(error)
+
+    }
+
 }
 
 
 module.exports={
-    create,findById,update,deleteById,findAll
+    create,findById,update,deleteById,findAll,findAllMin
 }

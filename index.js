@@ -9,6 +9,8 @@ app.use(bodyParser.json())
 app.use(cors())
 const port=process.env.SERVER_PORT | 3000
 
+app.use('/image',express.static('image'))
+
 
 const UserRouter=require('./router/UserRouter')
 const CustomerRouter=require('./router/customerRoute')
@@ -27,6 +29,5 @@ app.use("/api/v1/users",UserRouter)
 app.use("/api/v1/customers",CustomerRouter)
 app.use("/api/v1/products",ProductRouter)
 app.use("/api/v1/orders",OrderRouter)
-
 
 

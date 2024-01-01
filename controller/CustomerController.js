@@ -19,7 +19,7 @@ const findById=(req,res)=>{
     console.log({'_id':req.params.id})
     CustomerSchema.findOne({_id:req.params.id}).then((result)=>{
         if(result!=null){
-            res.status(201).json({message:'customer',data:result})
+           return res.status(201).json(result)
         }else {
             return res.status(500).json({message:'customer not found'})
         }
@@ -29,7 +29,8 @@ const findById=(req,res)=>{
 
 }
 const update=(req,res)=>{
-    CustomerSchema.findOneAndUpdate({'_id':req.params.id},{
+
+  CustomerSchema.findOneAndUpdate({'_id':req.params.id},{
         $set:{
             nic:req.body.nic,
             name:req.body.name,
