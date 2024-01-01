@@ -1,5 +1,6 @@
 const OrderSchema=require('../model/OrderSchema')
 
+
 const create=(req,res)=>{
     const order = new orderSchema({
         date:req.body.date,
@@ -57,29 +58,47 @@ const deleteById= async (req,res)=>{
     }
 }
 const findAll=(req,res)=>{
-    try{
-        const {searchText,page=1,size=1}=req.query;
-        const pageNumber=parseInt(page)
-        const pageSize=parseInt(size)
-        const query={};
-        if(searchText){
-            query.$text={$search:searchText}
+    try {
+
+        const {searchText, page = 1, size = 10} = req.query;
+        const pageNumber = parseInt(page)
+        const pageSize = parseInt(size)
+
+        const query = {};
+        if (searchText) {
+            query.$text = {$search: searchText}
         }
 
-        const skip=(pageNumber-1) * pageSize;
+        const skip = (pageNumber - 1) * pageSize;
 
-        const data= OrderSchema.find(query)
+        OrderSchema.find(query)
             .limit(pageSize)
-            .skip(skip)
-        res.status(200).json(data)
+            .skip(skip).then(response => {
+            return res.status(200).json(response);
+        })
 
-    }catch(error){
+
+    } catch (error) {
 
         return res.status(500).json(error)
 
     }
+
 }
 
+const findAllCount = (req, res) => {
+    try {
+        CustomerSchema.countDocuments().then(data => {
+            return res.status(200).json(data);
+        })
+    } catch (error) {
+
+        return res.status(500).json(error)
+    }
+
+}
+
+
 module.exports={
-    create,findById,update,deleteById,findAll
+    create,findById,update,deleteById,findAll,findAllCount
 }

@@ -25,6 +25,7 @@ router.delete('/delete-by-id/:id',ProductController.deleteById);
 router.put('/update/:id',upload.single('image'),ProductController.update);
 router.get('/find-all',ProductController.findAll);
 router.get('/find-all-min',ProductController.findAllMin);
+router.get('/find-all-count',ProductController.findAllCount);
 
 
 module.exports = router

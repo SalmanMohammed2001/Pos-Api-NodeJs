@@ -1,4 +1,5 @@
 const CustomerSchema=require('../model/Customerschema')
+const ProductSchema = require("../model/ProductSchama");
 
 const create=(req,res)=>{
     console.log(req.body)
@@ -91,6 +92,18 @@ const findAll=(req,res)=>{
     }
 }
 
+const findAllCount = (req, res) => {
+    try {
+        CustomerSchema.countDocuments().then(data => {
+            return res.status(200).json(data);
+        })
+    } catch (error) {
+
+        return res.status(500).json(error)
+    }
+
+}
+
 module.exports={
-    create,findById,update,deleteById,findAll
+    create,findById,update,deleteById,findAll,findAllCount
 }

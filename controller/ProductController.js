@@ -144,6 +144,19 @@ const findAllMin = (req, res) => {
 }
 
 
+const findAllCount = (req, res) => {
+    try {
+        ProductSchema.countDocuments().then(data => {
+            return res.status(200).json(data);
+        })
+    } catch (error) {
+
+        return res.status(500).json(error)
+    }
+
+}
+
+
 module.exports = {
-    create, findById, update, deleteById, findAll, findAllMin
+    create, findById, update, deleteById, findAll, findAllMin,findAllCount
 }

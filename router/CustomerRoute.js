@@ -12,6 +12,8 @@ router.delete('/delete-by-id',CustomerController.deleteById);
 router.put('/update/:id',CustomerController.update);
 // router.get('/find-all',verifyToken,CustomerController.findAll);
 router.get('/find-all',CustomerController.findAll);
+router.get('/find-all-count',CustomerController.findAllCount);
+
 
 
 

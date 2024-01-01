@@ -5,10 +5,10 @@ const verifyToken=require('../middleware/AuthMiddleware')
 const router = express.Router();
 
 router.post('/create',OrderController.create);
-router.get('/find-by-id/:id',verifyToken, OrderController.findById);
-router.delete('/delete/:id',verifyToken,OrderController.deleteById);
-router.put('/update/:id',verifyToken,OrderController.update);
-router.get('/find-all',verifyToken,OrderController.findAll);
-
+router.get('/find-by-id/:id', OrderController.findById);
+router.delete('/delete/:id',OrderController.deleteById);
+router.put('/update/:id',OrderController.update);
+router.get('/find-all',OrderController.findAll);
+router.get('/find-all-count',OrderController.findAllCount);
 
 module.exports = router
