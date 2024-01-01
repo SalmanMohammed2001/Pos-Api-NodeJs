@@ -2,9 +2,14 @@ const ProductSchema=require('../model/ProductSchama')
 const {query} = require("express");
 
 
+const fs = require('fs')
+const { promisify } = require('util')
+
+const unlinkAsync = promisify(fs.unlink)
+
 const create=(req,res)=>{
-    //console.log(req.body)
-  //  console.log(req.file)
+    console.log(req.body)
+    console.log(req.file)
    const product =new ProductSchema({
         name:req.body.name,
         description:req.body.description,
@@ -54,9 +59,12 @@ const update= async (req,res)=>{
     }
 }
 const deleteById= async (req,res)=>{
-    const deleteData= await ProductSchema.findByIdAndDelete({'_id':req.params.id})
+
+   const deleteData= await ProductSchema.findByIdAndDelete({'_id':req.params.id})
     if(deleteData){
-        res.status(204).json({message:'order delete'})
+        const ff =deleteData.image
+        fs.unlinkSync(ff)
+        res.status(204).json({message:'product delete'})
     }else{
         return res.status(500).json({message:'order not delete'})
 
