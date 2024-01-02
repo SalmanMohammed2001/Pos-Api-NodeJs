@@ -2,7 +2,8 @@ const OrderSchema=require('../model/OrderSchema')
 
 
 const create=(req,res)=>{
-    const order = new orderSchema({
+    // console.log(req.body)
+  const order = new OrderSchema({
         date:req.body.date,
         customerDetails:req.body.customerDetails,
         totalCost:req.body.totalCost,
@@ -88,7 +89,7 @@ const findAll=(req,res)=>{
 
 const findAllCount = (req, res) => {
     try {
-        CustomerSchema.countDocuments().then(data => {
+        OrderSchema.countDocuments().then(data => {
             return res.status(200).json(data);
         })
     } catch (error) {
@@ -98,7 +99,24 @@ const findAllCount = (req, res) => {
 
 }
 
+const findAllIncome = async (req, res) => {
+
+    try{
+        const result = await OrderSchema.aggregate([
+            {$group:{
+                    _id:null,
+                    totalCostSum:{$sum:'$totalCost'}
+                }}
+        ]);
+        console.log(result);
+        const totalCostSum= result.length>0?result[0].totalCostSum:0;
+        res.json({totalCostSum});
+    }catch (error){
+        return res.status(500).json({'message':'internal server error'});
+    }
+
+}
 
 module.exports={
-    create,findById,update,deleteById,findAll,findAllCount
+    create,findById,update,deleteById,findAll,findAllCount,findAllIncome
 }

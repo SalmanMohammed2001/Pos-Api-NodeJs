@@ -44,9 +44,9 @@ const findById = (req, res) => {
 }
 const update = async (req, res) => {
 
-    const response = await ProductSchema.findOne({_id: req.params.id})
-    const ff = response.image
-    fs.unlinkSync(ff);
+  //  const response = await ProductSchema.findOne({_id: req.params.id})
+   // const ff = response.image
+  //  fs.unlinkSync(ff);
     const updateData = await ProductSchema.findByIdAndUpdate({'_id': req.params.id}, {
         $set: {
             name: req.body.name,

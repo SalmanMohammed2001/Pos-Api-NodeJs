@@ -10,5 +10,6 @@ router.delete('/delete/:id',OrderController.deleteById);
 router.put('/update/:id',OrderController.update);
 router.get('/find-all',OrderController.findAll);
 router.get('/find-all-count',OrderController.findAllCount);
+router.get('/find-all-income',OrderController.findAllIncome);
 
 module.exports = router
