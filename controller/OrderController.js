@@ -1,5 +1,5 @@
 const OrderSchema=require('../model/OrderSchema')
-
+const ProductSchema = require('../model/ProductSchama')
 
 const create=(req,res)=>{
     // console.log(req.body)
@@ -12,6 +12,35 @@ const create=(req,res)=>{
 
     order.save().then(response=>{
         res.status(201).json({message:'order saved',data:response})
+
+        response.Product.forEach(product=>{
+
+
+
+            ProductSchema.findOne({'_id':product._id}).then((data)=>{
+
+
+
+                 const  setQty=data.qtyOnHand-product.qty
+
+                ProductSchema.updateOne({'_id':product._id},{
+                    $set:{
+                        name: product.name,
+                        description: product.description,
+                   //     image: req.file.path,
+                        qtyOnHand: setQty,
+                        unitePrice: product.unitePrice
+                    }
+                }).then((update)=>{
+                    if(update.modifiedCount>0){
+                        console.log('update')
+                    }
+                })
+
+            })
+
+        })
+
 
     }).catch(error=>{
         return res.status(500).json(error)
@@ -108,7 +137,7 @@ const findAllIncome = async (req, res) => {
                     totalCostSum:{$sum:'$totalCost'}
                 }}
         ]);
-        console.log(result);
+      //  console.log(result);
         const totalCostSum= result.length>0?result[0].totalCostSum:0;
         res.json({totalCostSum});
     }catch (error){

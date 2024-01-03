@@ -19,13 +19,13 @@ const upload = multer({storage: storage})
 
 
 
-router.post('/create',upload.single('image'),ProductController.create);
-router.get('/find-by-id/:id',ProductController.findById);
-router.delete('/delete-by-id/:id',ProductController.deleteById);
-router.put('/update/:id',upload.single('image'),ProductController.update);
-router.get('/find-all',ProductController.findAll);
-router.get('/find-all-min',ProductController.findAllMin);
-router.get('/find-all-count',ProductController.findAllCount);
+router.post('/create',verifyToken,upload.single('image'),ProductController.create);
+router.get('/find-by-id/:id',verifyToken,ProductController.findById);
+router.delete('/delete-by-id/:id',verifyToken,ProductController.deleteById);
+router.put('/update/:id',verifyToken,upload.single('image'),ProductController.update);
+router.get('/find-all',verifyToken,ProductController.findAll);
+router.get('/find-all-min',verifyToken,ProductController.findAllMin);
+router.get('/find-all-count',verifyToken,ProductController.findAllCount);
 
 
 module.exports = router
