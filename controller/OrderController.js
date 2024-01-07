@@ -11,15 +11,8 @@ const create=(req,res)=>{
     });
 
     order.save().then(response=>{
-        res.status(201).json({message:'order saved',data:response})
-
         response.Product.forEach(product=>{
-
-
-
             ProductSchema.findOne({'_id':product._id}).then((data)=>{
-
-
 
                  const  setQty=data.qtyOnHand-product.qty
 
@@ -34,14 +27,19 @@ const create=(req,res)=>{
                 }).then((update)=>{
                     if(update.modifiedCount>0){
                         console.log('update')
+                    }else {
+                        console.log('error')
                     }
+                }).catch((error)=>{
+                    res.status(400).json(error)
                 })
 
+            }).catch((error)=>{
+                res.status(400).json(error)
             })
 
         })
-
-
+        res.status(201).json({message:'order saved',data:response})
     }).catch(error=>{
         return res.status(500).json(error)
 
